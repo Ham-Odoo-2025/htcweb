@@ -1,0 +1,135 @@
+[
+  {
+    "_id": "69e07f45ef05abcac601e057",
+    "name": "Accessories",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e04e",
+    "name": "Control Panels",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e04d",
+    "name": "Detectors",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e056",
+    "name": "Emergency Lighting",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e04c",
+    "name": "Fire Alarm",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "6a7c6170c7589cbe66ccfad8",
+    "name": "Fire Dated Steel Doors",
+    "createdAt": "2026-08-12T12:05:04.246Z",
+    "updatedAt": "2026-08-12T12:05:04.246Z",
+    "__v": 0
+  },
+  {
+    "_id": "69e07f45ef05abcac601e051",
+    "name": "Fire Extinguishers",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e053",
+    "name": "Fire Fighting",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "6aa462edf414274252a8e234",
+    "name": "Fire Pump",
+    "createdAt": "2026-09-11T20:22:05.405Z",
+    "updatedAt": "2026-09-11T20:22:05.405Z",
+    "__v": 0
+  },
+  {
+    "_id": "69e07f45ef05abcac601e052",
+    "name": "Fire Suppression",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "6aa3f601f414274252a8e226",
+    "name": "GRP - PRODUCTS",
+    "createdAt": "2026-09-11T12:37:21.059Z",
+    "updatedAt": "2026-09-11T12:37:21.059Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a7c6a59c7589cbe66ccfad9",
+    "name": "Gas Detection System",
+    "createdAt": "2026-08-12T12:43:05.245Z",
+    "updatedAt": "2026-08-12T12:43:05.245Z",
+    "__v": 0
+  },
+  {
+    "_id": "69e07f45ef05abcac601e054",
+    "name": "Hose & Reel",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "6a8085efc7589cbe66ccfae2",
+    "name": "KICHEN HOOD FIRE SYSTEM",
+    "createdAt": "2026-08-15T15:29:51.526Z",
+    "updatedAt": "2026-08-15T15:29:51.526Z",
+    "__v": 0
+  },
+  {
+    "_id": "69e07f45ef05abcac601e050",
+    "name": "Modules & Accessories",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e04f",
+    "name": "Sounders & Beacons",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "69e07f45ef05abcac601e055",
+    "name": "Valves & Fittings",
+    "__v": 0,
+    "createdAt": "2026-04-16T06:18:45.146Z",
+    "updatedAt": "2026-04-16T06:18:45.146Z"
+  },
+  {
+    "_id": "6a8f11fc0336046dfe496db6",
+    "name": "fire extinguihser accessories",
+    "createdAt": "2026-08-26T16:19:08.080Z",
+    "updatedAt": "2026-08-26T16:19:08.080Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a82c86ac7589cbe66ccfaec",
+    "name": "industrial sirens, electric sirens",
+    "createdAt": "2026-08-17T08:38:02.651Z",
+    "updatedAt": "2026-08-17T08:38:02.651Z",
+    "__v": 0
+  }
+]
