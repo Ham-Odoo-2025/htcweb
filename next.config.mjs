@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'htc-fire.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
     ],
   },
 };
