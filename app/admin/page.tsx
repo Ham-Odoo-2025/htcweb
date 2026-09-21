@@ -27,6 +27,8 @@ import {
   Clock,
   MapPin,
   Sparkles,
+  Upload,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 interface Product {
@@ -178,6 +180,41 @@ export default function AdminDashboard() {
   const showNotification = (type: 'success' | 'error', text: string) => {
     setFeedbackMsg({ type, text });
     setTimeout(() => setFeedbackMsg(null), 4000);
+  };
+
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showNotification('error', 'Please select a valid image file (JPG, PNG, WebP)');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success && data.url) {
+        setProductForm((prev) => ({ ...prev, image: data.url }));
+        showNotification('success', 'Image uploaded successfully to cloud!');
+      } else {
+        showNotification('error', data.error || 'Failed to upload image');
+      }
+    } catch (err: any) {
+      showNotification('error', err.message || 'Image upload failed');
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   // -------------------------------------------------------------------------
@@ -1119,25 +1156,99 @@ export default function AdminDashboard() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Image URL
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                  Product Image
                 </label>
-                <input
-                  type="url"
-                  value={productForm.image}
-                  onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                  placeholder="https://... image link"
-                  className="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 font-mono text-xs"
-                />
-                {productForm.image && (
-                  <div className="mt-2 w-16 h-16 bg-white rounded-lg p-1 border border-slate-700 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={productForm.image}
-                      alt="Preview"
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  </div>
-                )}
+
+                {/* Upload from Computer Box */}
+                <div className="bg-slate-850 border-2 border-dashed border-slate-700 hover:border-red-500/50 rounded-2xl p-4 transition-all text-center">
+                  {productForm.image ? (
+                    <div className="flex items-center gap-4 text-left">
+                      <div className="w-20 h-20 bg-white rounded-xl p-1.5 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                        <img
+                          src={productForm.image}
+                          alt="Product Preview"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1 mb-1">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Image Ready
+                        </span>
+                        <p className="text-[11px] text-slate-400 truncate font-mono mb-2">
+                          {productForm.image}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <label
+                            htmlFor="image-file-input"
+                            className="cursor-pointer px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-600 transition-colors inline-flex items-center gap-1.5"
+                          >
+                            <Upload className="w-3 h-3" />
+                            <span>Replace Photo</span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setProductForm({ ...productForm, image: '' })}
+                            className="px-2.5 py-1 text-red-400 hover:bg-red-500/10 text-xs rounded-lg transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      {isUploadingImage ? (
+                        <div className="py-6 flex flex-col items-center gap-2">
+                          <RefreshCw className="w-8 h-8 text-red-500 animate-spin" />
+                          <p className="text-xs text-slate-300 font-medium">
+                            Uploading image to Cloud Storage...
+                          </p>
+                        </div>
+                      ) : (
+                        <label
+                          htmlFor="image-file-input"
+                          className="cursor-pointer py-4 flex flex-col items-center justify-center gap-2 block group"
+                        >
+                          <div className="w-12 h-12 rounded-xl bg-red-500/10 text-red-400 group-hover:scale-110 transition-transform flex items-center justify-center border border-red-500/20">
+                            <Upload className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <span className="text-sm font-semibold text-white group-hover:text-red-400 transition-colors">
+                              Click to Upload Photo from Computer
+                            </span>
+                            <p className="text-[11px] text-slate-400 mt-0.5">
+                              Supports JPG, PNG, WebP (Max 10MB)
+                            </p>
+                          </div>
+                        </label>
+                      )}
+                    </div>
+                  )}
+
+                  <input
+                    id="image-file-input"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={isUploadingImage}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Optional Image URL Toggle */}
+                <details className="mt-2 text-xs text-slate-400">
+                  <summary className="cursor-pointer hover:text-slate-200 font-medium select-none">
+                    Or enter image link manually
+                  </summary>
+                  <input
+                    type="url"
+                    value={productForm.image}
+                    onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
+                    placeholder="https://... image link"
+                    className="w-full mt-2 px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 font-mono"
+                  />
+                </details>
               </div>
 
               <div>
