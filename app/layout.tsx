@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -30,7 +31,17 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script
+          src="https://ai.maifelz.com/maz.js"
+          data-bot-id="maz_520be52f0376"
+          data-api-host="https://maz-backend-t1hy.onrender.com"
+          data-teaser-text="I am hot! 🔥 Pls ask me 😊"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
+
