@@ -40,6 +40,49 @@ export default function RootLayout({
           data-teaser-text="I am hot! 🔥 Pls ask me 😊"
           strategy="afterInteractive"
         />
+        <Script
+          id="maz-htc-fire-chips"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function updateTeaserChips() {
+                  var teaserChips = document.getElementById("maz-teaser-chips");
+                  if (teaserChips) {
+                    var chip1 = teaserChips.querySelector('[data-q*="Maifelz"], [data-q*="Services"]');
+                    if (chip1) {
+                      chip1.setAttribute("data-q", "What services does HTC Fire provide?");
+                      chip1.innerHTML = "⚡ HTC Fire Services";
+                    }
+                    var chip2 = teaserChips.querySelector('[data-q*="Odoo"]');
+                    if (chip2) {
+                      chip2.setAttribute("data-q", "Tell me about Fire Alarm Systems & QCDD Approval");
+                      chip2.innerHTML = "🚨 Fire Alarm & QCDD";
+                    }
+                    var chip3 = teaserChips.querySelector('[data-q*="consultation"]');
+                    if (chip3) {
+                      chip3.setAttribute("data-q", "Request Fire Safety AMC Maintenance Quote");
+                      chip3.innerHTML = "📅 AMC Quotation";
+                    }
+                    var teaserName = document.getElementById("maz-teaser-name");
+                    if (teaserName && teaserName.textContent.indexOf("Maifelz") !== -1) {
+                      teaserName.textContent = "HTC Fire Qatar Support";
+                    }
+                  }
+                }
+                var observer = new MutationObserver(function() {
+                  updateTeaserChips();
+                });
+                observer.observe(document.documentElement, { childList: true, subtree: true });
+                window.addEventListener("DOMContentLoaded", updateTeaserChips);
+                window.addEventListener("load", updateTeaserChips);
+                setTimeout(updateTeaserChips, 600);
+                setTimeout(updateTeaserChips, 1500);
+                setTimeout(updateTeaserChips, 3000);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );
