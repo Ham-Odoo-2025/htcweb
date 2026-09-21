@@ -115,7 +115,31 @@ ${items
       console.log('[Odoo Credentials not configured yet, Lead captured locally]:', odooLeadData);
     }
 
-    // 3. Format WhatsApp Dispatch URL
+    // 3. Save Lead into DB / Local Storage for the Admin Panel
+    try {
+      const { saveLead } = await import('@/lib/db');
+      await saveLead({
+        id: 'lead_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36),
+        refId,
+        customerName: customer.name,
+        customerPhone: customer.phone,
+        customerEmail: customer.email || '',
+        companyName: customer.company || '',
+        notes: customer.notes || '',
+        items: items.map((it: any) => ({
+          name: it.name,
+          category: it.category || 'General',
+          quantity: it.quantity || 1,
+          price: it.price || 0,
+        })),
+        status: 'new',
+        createdAt: timestamp,
+      });
+    } catch (saveErr) {
+      console.warn('[Admin Lead Save Error]:', saveErr);
+    }
+
+    // 4. Format WhatsApp Dispatch URL
     const itemsList = items
       .map((item: any) => `• ${item.quantity}x ${item.name}`)
       .join('\n');
