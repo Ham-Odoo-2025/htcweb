@@ -2,8 +2,9 @@
 
 import React, { useState, useMemo, useRef } from 'react';
 import Image from 'next/image';
-import { Search, MessageCircle, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
+import { Search, MessageCircle, ChevronLeft, ChevronRight, Tag, FileText, ArrowRight } from 'lucide-react';
 import { Product, Category } from '@/lib/data';
+import ProductEnquiryModal, { QuoteItem } from '@/components/ProductEnquiryModal';
 
 interface ProductsCatalogProps {
   products: Product[];
@@ -25,6 +26,53 @@ export default function ProductsCatalog({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 20;
+
+  // Quote State
+  const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleEnquireProduct = (product: Product) => {
+    setQuoteItems((prev) => {
+      const exists = prev.find((item) => item.product._id === product._id);
+      if (exists) {
+        return prev;
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateQuantity = (productId: string, delta: number) => {
+    setQuoteItems((prev) =>
+      prev
+        .map((item) => {
+          if (item.product._id === productId) {
+            const newQty = Math.max(1, item.quantity + delta);
+            return { ...item, quantity: newQty };
+          }
+          return item;
+        })
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const handleRemoveItem = (productId: string) => {
+    setQuoteItems((prev) => prev.filter((item) => item.product._id !== productId));
+  };
+
+  const handleAddProduct = (product: Product) => {
+    setQuoteItems((prev) => {
+      const exists = prev.find((item) => item.product._id === product._id);
+      if (exists) {
+        return prev.map((item) =>
+          item.product._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+  };
 
   const categoryScrollRef = useRef<HTMLDivElement>(null);
 
@@ -236,16 +284,15 @@ export default function ProductsCatalog({
                     </p>
                   </div>
 
-                  {/* WhatsApp Quick Enquire Button */}
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
+                  {/* Product Enquiry Button */}
+                  <button
+                    type="button"
+                    onClick={() => handleEnquireProduct(product)}
+                    className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 px-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-xs hover:shadow"
                   >
-                    <MessageCircle className="w-3.5 h-3.5 shrink-0" />
-                    <span>{isAr ? 'طلب تسعيرة' : 'Enquire'}</span>
-                  </a>
+                    <FileText className="w-3.5 h-3.5 shrink-0" />
+                    <span>{isAr ? 'طلب تسعيرة (RFQ)' : 'Enquire Quote'}</span>
+                  </button>
                 </div>
               );
             })}
@@ -307,6 +354,37 @@ export default function ProductsCatalog({
           </div>
         )}
       </section>
+
+      {/* Floating Quote Review Bar (visible when items selected) */}
+      {quoteItems.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-3 px-5 py-3 rounded-full bg-gray-950 text-white border-2 border-red-500 shadow-2xl hover:bg-black hover:scale-105 transition"
+          >
+            <span className="size-6 rounded-full bg-red-600 text-white text-xs font-extrabold flex items-center justify-center animate-pulse">
+              {quoteItems.length}
+            </span>
+            <span className="text-xs font-bold">
+              {isAr ? 'مراجعة وإرسال قائمة التسعير' : 'Review & Submit Quote List'}
+            </span>
+            <ArrowRight className="w-4 h-4 rtl:rotate-180 text-red-400" />
+          </button>
+        </div>
+      )}
+
+      {/* Product Enquiry Modal */}
+      <ProductEnquiryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        selectedItems={quoteItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+        onAddProduct={handleAddProduct}
+        allProducts={products}
+        locale={locale}
+      />
     </div>
   );
 }
