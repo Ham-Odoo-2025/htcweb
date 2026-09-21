@@ -1,7 +1,11 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import ProductsCatalog from '@/components/ProductsCatalog';
-import { getProducts, getCategories, getMessages } from '@/lib/data';
+import { getMessages } from '@/lib/data';
+import { getAllProducts, getAllCategories } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface Props {
   params: { locale: string };
@@ -26,11 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function AllProductsPage({ params }: Props) {
+export default async function AllProductsPage({ params }: Props) {
   const locale = params.locale === 'ar' ? 'ar' : 'en';
   const messages = getMessages(locale);
-  const { products } = getProducts({ limit: 150 });
-  const categories = getCategories();
+  const products = await getAllProducts();
+  const categories = await getAllCategories();
 
   return (
     <div className="pt-24 lg:pt-28">

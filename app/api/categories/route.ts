@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getCategories } from '@/lib/data';
+import { getAllCategories } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const categories = getCategories();
+  const categories = await getAllCategories();
   return NextResponse.json(categories, {
     headers: {
-      'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+      'Cache-Control': 'no-store, max-age=0',
     },
   });
 }
+
